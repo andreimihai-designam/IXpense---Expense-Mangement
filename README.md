@@ -146,3 +146,5 @@ Tema deschisă păstrează paleta inițială. Sumele indicatorilor sunt afișate
 
 ## Sold lunar automat
 Bugetul total include suma de pornire și veniturile suplimentare ale lunii; salariul asociat nu este dublat. Soldul disponibil este bugetul total minus cheltuielile din bani. Bonurile și cheltuielile din bonuri rămân separate. Alocările pe categorii nu sunt cheltuieli. Editarea sau ștergerea tranzacțiilor recalculează imediat sumele.
+
+Categoriile afișează proeminent suma disponibilă (buget alocat minus cheltuieli) sau totalul cheltuit în luna selectată dacă nu au buget. Sumele se recalculează după editarea, mutarea sau ștergerea tranzacțiilor; alocarea inițială rămâne păstrată.

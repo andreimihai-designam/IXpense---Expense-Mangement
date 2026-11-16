@@ -108,8 +108,8 @@ export function dashboardFocusIndicators(state,month){
  const percent=(value,total)=>total?Math.max(0,Math.min(100,value*100/total)):0;
  return [
   {key:'savings',name:'Economii',color:'#34d399',amount:savingsValue,total:savingsTarget,percent:percent(savingsValue,savingsTarget),label:'Alocat pentru economii',categoryId:savings?.id||null,configured:savingsTarget>0},
-  {key:'car',name:'Mașină',color:'#a78bfa',amount:(car?.allocated||0)-(car?.spent||0),total:car?.allocated||0,percent:percent((car?.allocated||0)-(car?.spent||0),car?.allocated||0),label:'Disponibil pentru mașină',categoryId:car?.id||null,configured:!!car?.allocated},
-  {key:'debt',name:'Datorii',color:'#f59e0b',amount:Math.max(0,debtTotal-debtPaid),total:debtTotal,percent:percent(Math.max(0,debtTotal-debtPaid),debtTotal),label:'Rămas de plată',categoryId:debt?.id||null,configured:debtTotal>0}
+  {key:'car',name:'Mașină',color:'#a78bfa',amount:car?.allocated?car.allocated-car.spent:car?.spent||0,total:car?.allocated||0,percent:percent((car?.allocated||0)-(car?.spent||0),car?.allocated||0),label:car?.allocated?'Disponibil pentru mașină':'Cheltuit luna aceasta · fără buget',categoryId:car?.id||null,configured:!!car?.allocated},
+  {key:'debt',name:'Datorii',color:'#f59e0b',amount:debtTotal?Math.max(0,debtTotal-debtPaid):debtPaid,total:debtTotal,percent:percent(Math.max(0,debtTotal-debtPaid),debtTotal),label:debtTotal?'Rămas de plată':'Achitat luna aceasta · fără total configurat',categoryId:debt?.id||null,configured:debtTotal>0}
  ];
 }
 

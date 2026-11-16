@@ -202,3 +202,16 @@ test('Monthly cash budget supports legacy salary, manual budget, no budget and o
  assert.equal(monthlyCashBudget(s,'2026-11').available,-2000);
  assert.equal(monthlyCashBudget(s,'2026-12').available,0);
 });
+
+test('Category spending accumulates without a budget and becomes remaining money after allocation',async()=>{
+ const {categoryBudgetSummary}=await import('../dist/finance.js');
+ const categories=[{id:'group',name:'Mașină',isGroup:true},{id:'fuel',parentId:'group',name:'Motorină'},{id:'food',name:'Alimentație'}];
+ const transactions=[{id:'one',type:'expense',amount:12000,category:'fuel',date:'2026-11-01'},{id:'two',type:'expense',amount:8000,category:'fuel',date:'2026-11-16'},{id:'income',type:'income',amount:30000,category:'fuel',date:'2026-11-16'},{id:'old',type:'expense',amount:90000,category:'fuel',date:'2026-10-01'}];
+ const summarize=budgets=>categoryBudgetSummary(transactions,categories,budgets,'2026-11');
+ assert.equal(summarize({})[1].spent,20000);assert.equal(summarize({})[1].remaining,null);
+ const budgets={'2026-11':{fuel:50000}};
+ assert.equal(summarize(budgets)[1].remaining,30000);assert.equal(summarize(budgets)[0].remaining,30000);
+ transactions[0].category='food';assert.equal(summarize(budgets)[1].remaining,42000);assert.equal(summarize(budgets)[2].spent,12000);
+ transactions.splice(1,1);assert.equal(summarize(budgets)[1].remaining,50000);
+ assert.equal(budgets['2026-11'].fuel,50000);
+});
