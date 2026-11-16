@@ -152,14 +152,14 @@ test('Dashboard shows root balances with grouped spending, vouchers and clamped 
  assert.equal(mainCategoryBalances([],categories,{},'2026-11')[0].percentAvailable,0);
 });
 
-test('Focus indicators use exact order/colors with three distinct progress meanings',async()=>{
+test('Focus indicators use exact order/colors with allocated balances and savings target',async()=>{
  const {dashboardFocusIndicators}=await import('../dist/finance.js');
  const state={categories:[{id:'car',name:'Masina',isGroup:true},{id:'fuel',name:'Motorina',parentId:'car'},{id:'s',name:'Economii'},{id:'d',name:'Datorii'},{id:'x',name:'Cumpărături'}],transactions:[{type:'expense',category:'fuel',amount:25000,date:'2026-11-01'},{type:'expense',category:'d',amount:10000,date:'2026-11-02'},{type:'expense',category:'d',amount:99999,date:'2026-10-02'}],categoryBudgets:{'2026-11':{fuel:100000,s:20000,d:45000,x:80000}},indicatorTargets:{'2026-11':{savings:100000,debt:60000}}};
- const before=structuredClone(state),rows=dashboardFocusIndicators(state,'2026-11');assert.deepEqual(rows.map(r=>r.name),['Economii','Mașină','Datorii']);assert.deepEqual(rows.map(r=>r.color),['#34d399','#a78bfa','#f59e0b']);assert.equal(rows[0].percent,20);assert.equal(rows[0].amount,20000);assert.equal(rows[1].amount,75000);assert.equal(rows[1].percent,75);assert.equal(rows[2].amount,50000);assert.deepEqual(state,before);
+ const before=structuredClone(state),rows=dashboardFocusIndicators(state,'2026-11');assert.deepEqual(rows.map(r=>r.name),['Economii','Mașină','Datorii']);assert.deepEqual(rows.map(r=>r.color),['#34d399','#a78bfa','#f59e0b']);assert.equal(rows[0].percent,20);assert.equal(rows[0].amount,20000);assert.equal(rows[1].amount,75000);assert.equal(rows[1].percent,75);assert.equal(rows[2].amount,35000);assert.deepEqual(state,before);
  state.categoryBudgets['2026-11'].s=50000;assert.equal(dashboardFocusIndicators(state,'2026-11')[0].percent,50);delete state.indicatorTargets['2026-11'].debt;assert.equal(dashboardFocusIndicators(state,'2026-11')[2].amount,35000);
 });
 test('Focus indicators handle unconfigured targets and complete repayment without NaN',async()=>{
- const {dashboardFocusIndicators}=await import('../dist/finance.js');const state={categories:[],transactions:[],categoryBudgets:{}};assert.deepEqual(dashboardFocusIndicators(state,'2026-11').map(r=>r.percent),[0,0,0]);state.categories=[{id:'cat-4',name:'Datorii'}];state.indicatorTargets={'2026-11':{debt:10000}};state.transactions=[{category:'cat-4',type:'expense',amount:15000,date:'2026-11-03'}];assert.equal(dashboardFocusIndicators(state,'2026-11')[2].amount,0);assert.equal(dashboardFocusIndicators(state,'2026-11')[2].percent,0);
+ const {dashboardFocusIndicators}=await import('../dist/finance.js');const state={categories:[],transactions:[],categoryBudgets:{}};assert.deepEqual(dashboardFocusIndicators(state,'2026-11').map(r=>r.percent),[0,0,0]);state.categories=[{id:'cat-4',name:'Datorii'}];state.indicatorTargets={'2026-11':{debt:10000}};state.transactions=[{category:'cat-4',type:'expense',amount:15000,date:'2026-11-03'}];assert.equal(dashboardFocusIndicators(state,'2026-11')[2].amount,15000);assert.equal(dashboardFocusIndicators(state,'2026-11')[2].percent,0);
 });
 
 test('Voucher balance correction preserves recorded spending, salary and other months',async()=>{
@@ -214,4 +214,18 @@ test('Category spending accumulates without a budget and becomes remaining money
  transactions[0].category='food';assert.equal(summarize(budgets)[1].remaining,42000);assert.equal(summarize(budgets)[2].spent,12000);
  transactions.splice(1,1);assert.equal(summarize(budgets)[1].remaining,50000);
  assert.equal(budgets['2026-11'].fuel,50000);
+});
+
+test('Dashboard adds parent and child allocations and subtracts payments for all three categories',async()=>{
+ const {dashboardFocusIndicators}=await import('../dist/finance.js');
+ const state={categories:[{id:'s',name:'Economii',isGroup:true},{id:'trip',name:'Călătorii',parentId:'s'},{id:'car',name:'Mașină',isGroup:true},{id:'fuel',name:'Motorină',parentId:'car'},{id:'insurance',name:'Asigurare',parentId:'car'},{id:'debt',name:'Datorii',isGroup:true},{id:'loan',name:'Credit',parentId:'debt'}],categoryBudgets:{'2026-11':{s:10000,trip:40000,fuel:50000,insurance:30000,debt:20000,loan:10000}},indicatorTargets:{'2026-11':{savings:100000,debt:999999}},transactions:[]};
+ const amounts=()=>dashboardFocusIndicators(state,'2026-11').map(c=>c.amount);
+ assert.deepEqual(amounts(),[50000,80000,30000]);
+ state.transactions.push({id:'s',category:'trip',type:'expense',amount:5000,date:'2026-11-16'},{id:'c',category:'fuel',type:'expense',amount:10000,date:'2026-11-16'},{id:'d',category:'loan',type:'expense',amount:5000,date:'2026-11-16'});
+ assert.deepEqual(amounts(),[45000,70000,25000]);
+ state.categoryBudgets['2026-11'].insurance+=20000;assert.deepEqual(amounts(),[45000,90000,25000]);
+ state.transactions[1].amount=15000;assert.equal(amounts()[1],85000);
+ state.transactions=state.transactions.filter(t=>t.id!=='c');assert.equal(amounts()[1],100000);
+ state.transactions.push({category:'loan',type:'expense',amount:40000,date:'2026-11-16'});assert.equal(amounts()[2],-15000);
+ assert.deepEqual(dashboardFocusIndicators(state,'2026-10').map(c=>c.amount),[0,0,0]);
 });

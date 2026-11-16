@@ -104,12 +104,15 @@ export function dashboardFocusIndicators(state,month){
  const roots=categoryBudgetSummary(state.transactions,state.categories,state.categoryBudgets,month).filter(c=>!c.parentId);
  const find=(name,id)=>roots.find(c=>normalize(c.name)===name)||roots.find(c=>c.id===id);
  const savings=find('economii','cat-7'),car=find('masina','cat-car'),debt=find('datorii','cat-4'),targets=state.indicatorTargets?.[month]||{};
- const savingsValue=savings?.allocated||0,savingsTarget=targets.savings||0,debtPaid=debt?.spent||0,debtTotal=targets.debt??debt?.allocated??0;
  const percent=(value,total)=>total?Math.max(0,Math.min(100,value*100/total)):0;
+ const indicator=(key,name,color,category,target=0)=>{
+  const allocated=category?.allocated||0,spent=category?.spent||0,available=allocated-spent,total=target||allocated;
+  return {key,name,color,amount:allocated?available:spent,allocated,spent,total,percent:allocated?percent(available,total):0,label:allocated?'Disponibil din buget':'Cheltuit luna aceasta · fără buget',categoryId:category?.id||null,configured:allocated>0};
+ };
  return [
-  {key:'savings',name:'Economii',color:'#34d399',amount:savingsValue,total:savingsTarget,percent:percent(savingsValue,savingsTarget),label:'Alocat pentru economii',categoryId:savings?.id||null,configured:savingsTarget>0},
-  {key:'car',name:'Mașină',color:'#a78bfa',amount:car?.allocated?car.allocated-car.spent:car?.spent||0,total:car?.allocated||0,percent:percent((car?.allocated||0)-(car?.spent||0),car?.allocated||0),label:car?.allocated?'Disponibil pentru mașină':'Cheltuit luna aceasta · fără buget',categoryId:car?.id||null,configured:!!car?.allocated},
-  {key:'debt',name:'Datorii',color:'#f59e0b',amount:debtTotal?Math.max(0,debtTotal-debtPaid):debtPaid,total:debtTotal,percent:percent(Math.max(0,debtTotal-debtPaid),debtTotal),label:debtTotal?'Rămas de plată':'Achitat luna aceasta · fără total configurat',categoryId:debt?.id||null,configured:debtTotal>0}
+  indicator('savings','Economii','#34d399',savings,targets.savings||0),
+  indicator('car','Mașină','#a78bfa',car),
+  indicator('debt','Datorii','#f59e0b',debt)
  ];
 }
 
