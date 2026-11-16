@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {parseMoney,summarize,inMonth,breakdown,dailyExpenses,csv,DEFAULT_CATEGORIES} from '../dist/finance.js';
+import {monthlyCashBudget,parseMoney,summarize,inMonth,breakdown,dailyExpenses,csv,DEFAULT_CATEGORIES} from '../dist/finance.js';
 import {initialState,loadState,saveState,demoTransactions} from '../dist/storage.js';
 const rows=[{id:'1',name:'Salariu',type:'income',amount:900000,category:'cat-8',date:'2026-11-01'},{id:'2',name:'Market',type:'expense',amount:10025,category:'cat-0',date:'2026-11-02'},{id:'3',name:'Cafea',type:'expense',amount:1275,category:'cat-0',date:'2026-11-02'},{id:'4',name:'Anterior',type:'expense',amount:99999,category:'cat-2',date:'2026-10-30'}];
 test('Romanian amounts are converted exactly to integer bani',()=>{assert.equal(parseMoney('1234,56'),123456);assert.equal(parseMoney('0.29'),29);assert.equal(parseMoney('100'),10000);for(const s of ['-1','NaN','1e5','1,001','','1.000,00'])assert.throws(()=>parseMoney(s));});
@@ -175,4 +175,30 @@ test('Missing car subcategory is created on demand without duplicating existing 
 });
 test('Direct car budget and unmapped subcategories stay separate from the seven slots',async()=>{
  const {carBudgetSegments}=await import('../dist/finance.js');const s={categories:[{id:'car',name:'Mașină',isGroup:true},{id:'extra',name:'Taxe',parentId:'car'}],categoryBudgets:{'2026-11':{car:10000,extra:20000}},transactions:[{category:'extra',type:'expense',amount:5000,date:'2026-11-01'}]};const result=carBudgetSegments(s,'2026-11');assert.equal(result.otherAllocated,30000);assert.equal(result.otherSpent,5000);assert.ok(result.segments.every(s=>s.allocated===0));
+});
+
+test('Monthly cash budget adds income once and subtracts cash expenses independently of allocations',()=>{
+ const state={budgets:{'2026-11':500000},categoryBudgets:{'2026-11':{car:400000}},transactions:[
+ {id:'salary',name:'Salariu',type:'income',amount:500000,date:'2026-11-01',salaryMonth:'2026-11'},
+ {id:'gift',name:'Cadou',type:'income',amount:20000,date:'2026-11-16'},
+ {id:'cash',name:'Magazin',type:'expense',amount:10000,date:'2026-11-16'},
+ {id:'meal',name:'Alimente',type:'expense',paymentSource:'meal',amount:5000,date:'2026-11-16'},
+ {id:'other',name:'Alte luni',type:'income',amount:90000,date:'2026-10-16'}]};
+ assert.deepEqual(monthlyCashBudget(state,'2026-11'),{base:500000,income:520000,total:520000,spent:10000,available:510000});
+ state.transactions.find(t=>t.id==='gift').amount=30000;
+ assert.equal(monthlyCashBudget(state,'2026-11').available,520000);
+ state.transactions=state.transactions.filter(t=>t.id!=='cash');
+ assert.equal(monthlyCashBudget(state,'2026-11').available,530000);
+ state.transactions=state.transactions.filter(t=>t.id!=='gift');
+ assert.equal(monthlyCashBudget(state,'2026-11').total,500000);
+ assert.equal(monthlyCashBudget(state,'2026-10').total,90000);
+});
+test('Monthly cash budget supports legacy salary, manual budget, no budget and overspending',()=>{
+ const s={budgets:{'2026-11':10000},transactions:[{name:'Salariu',type:'income',amount:10000,date:'2026-11-01'}]};
+ assert.equal(monthlyCashBudget(s,'2026-11').total,10000);
+ s.transactions[0].name='Cadou';assert.equal(monthlyCashBudget(s,'2026-11').total,20000);
+ s.budgets={};assert.equal(monthlyCashBudget(s,'2026-11').total,10000);
+ s.transactions.push({name:'Plată',type:'expense',amount:12000,date:'2026-11-16'});
+ assert.equal(monthlyCashBudget(s,'2026-11').available,-2000);
+ assert.equal(monthlyCashBudget(s,'2026-12').available,0);
 });

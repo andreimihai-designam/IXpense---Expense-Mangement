@@ -147,3 +147,16 @@ export function ensureCarSegment(state,key){
  let root=carRoot(state);if(!root){root={id:crypto.randomUUID(),name:'Mașină',isGroup:true,custom:true,color:'#a78bfa',icon:'car'};state.categories.push(root);}root.isGroup=true;
  let child=matchingCarChild(state,root,slot);if(!child){child={id:crypto.randomUUID(),name:slot.name,parentId:root.id,custom:true,color:slot.color,icon:slot.key==='fuel'?'fuel':'wrench'};state.categories.push(child);}return child.id;
 }
+
+// The stored budget is the monthly starting amount; its salary transaction must not be counted twice.
+export function monthlyCashBudget(state,month){
+ const rows=inMonth(state.transactions,month),base=state.budgets?.[month]||0;
+ const incomes=rows.filter(t=>t.type==='income');
+ const linked=incomes.filter(t=>t.salaryMonth===month);
+ const salaries=linked.length?linked:incomes.filter(t=>/^salariu(?:\s|$)/i.test(t.name));
+ const covered=salaries.reduce((sum,t)=>sum+t.amount,0);
+ const income=incomes.reduce((sum,t)=>sum+t.amount,0);
+ const total=base+income-Math.min(base,covered);
+ const spent=rows.filter(t=>t.type==='expense'&&t.paymentSource!=='meal').reduce((sum,t)=>sum+t.amount,0);
+ return {base,income,total,spent,available:total-spent};
+}

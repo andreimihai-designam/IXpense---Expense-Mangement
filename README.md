@@ -143,3 +143,6 @@ Legenda afișează numele și soldul rămas și permite deschiderea formularului
 Textele care aveau dimensiuni sub 10 pt sunt mărite la minimum 10 pt, inclusiv pe mobil, în tabele, legende și formulare. Valorile totale ale celor trei bare sunt deasupra barelor, la 14 pt, iar interiorul rămâne dedicat progresului colorat. Editarea bonurilor folosește un creion, dimensionat la 25% din înălțimea casetei financiare, fără textul „Actualizează”.
 
 Tema deschisă păstrează paleta inițială. Sumele indicatorilor sunt afișate în stânga, lângă denumirea categoriei.
+
+## Sold lunar automat
+Bugetul total include suma de pornire și veniturile suplimentare ale lunii; salariul asociat nu este dublat. Soldul disponibil este bugetul total minus cheltuielile din bani. Bonurile și cheltuielile din bonuri rămân separate. Alocările pe categorii nu sunt cheltuieli. Editarea sau ștergerea tranzacțiilor recalculează imediat sumele.
