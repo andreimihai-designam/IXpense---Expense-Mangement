@@ -159,3 +159,5 @@ Alimentația selectează implicit bonurile pentru tranzacții noi. Sursa implici
 Adăugarea, editarea sau ștergerea înlocuiește/elimină înregistrarea după ID și recalculează totalurile, fără debitări/restaurări manuale. Ștergerea cere confirmare; repetarea eliminării nu dublează restaurarea. Bugetele inițiale rămân nemodificate. Rezumatele de lună deja salvate se actualizează numai la recalculare explicită.
 
 Resetarea din Dashboard șterge datele financiare din toate lunile (tranzacții, bugete, bonuri, alocări, repere, favorite, facturi, obiective și închideri), păstrând categoriile și aspectul. Necesită confirmare explicită; descărcarea backupului este bifată implicit înainte de ștergere.
+
+Dashboardul cu card Salariu/Cheltuit, indicator semicircular, bonuri separate și bare pe subcategorii se adaptează la telefon, tabletă, laptop și desktop. Ecranele mari folosesc două coloane; pe mobil navigarea cu șase iconițe apare într-o bandă închisă, hașurată, fără forme ovale.
