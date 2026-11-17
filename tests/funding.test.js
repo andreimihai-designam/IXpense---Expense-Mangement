@@ -35,3 +35,11 @@ test('Food defaults are configurable and persist without rewriting existing paym
 test('Custom food receives voucher allocation without duplicate categories; reports share dashboard balance',()=>{
  const s=initialState();s.categories=[{id:'shop',name:'Cumpărături',isGroup:true,color:'#123456',icon:'tag'},{id:'food',name:'Alimente',parentId:'shop',color:'#123456',icon:'tag'}];setMealVouchers(s,month,60000);assert.equal(s.categories.length,2);assert.equal(defaultFundingSource(s,'food'),'meal');const meal=entry('lidl',10000,'food','meal');validateMealPayment(s,meal);s.transactions.push(meal);assert.equal(category(s,'food').remaining,50000);assert.equal(category(s,'shop').remaining,50000);s.budgets[month]=500000;s.transactions.push(entry('cash',1000,'unknown'));assert.equal(monthlyClosingSummary(s,month).cashBalance,monthlyFinancialSummary(s,month).cash.available);
 });
+
+test('Full financial reset clears every month, preserves categories/settings and is idempotent',async()=>{
+ const {resetFinancialData}=await import('../dist/features.js');const s=setup();s.transactions.push(entry('coffee',1000));s.categoryBudgets['2026-10']={'cat-8':500};s.budgets['2026-10']=200000;s.favorites=[{id:'favorite',amount:100}];s.bills=[{id:'bill',amount:100}];s.goals=[{id:'goal',targetAmount:500}];s.monthClosures={'2026-10':{totals:{income:1}}};s.indicatorTargets={'2026-11':{savings:10000}};s.theme='light';s.collapsed=true;const categories=structuredClone(s.categories);
+ resetFinancialData(s);assert.deepEqual(s.categories,categories);assert.equal(s.theme,'light');assert.equal(s.collapsed,true);
+ for(const key of ['transactions','favorites','bills','goals'])assert.deepEqual(s[key],[]);
+ for(const key of ['budgets','categoryBudgets','mealVouchers','mealAllocations','indicatorTargets','monthClosures'])assert.deepEqual(s[key],{});
+ assert.equal(monthlyFinancialSummary(s,month).totalAvailable,0);assert.equal(monthlyFinancialSummary(s,'2026-10').totalAvailable,0);const first=structuredClone(s);resetFinancialData(s);assert.deepEqual(s,first);assert.deepEqual(parseBackup(createBackup(s)),s);
+});

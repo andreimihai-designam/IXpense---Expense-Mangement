@@ -157,3 +157,5 @@ Dashboard: Economii, Mașină și Datorii afișează totalul alocărilor categor
 Alimentația selectează implicit bonurile pentru tranzacții noi. Sursa implicită se poate modifica în editarea categoriei și se păstrează în backup; nu rescrie sursele tranzacțiilor istorice. Categoriile personalizate de tip Alimente/Alimentație sunt recunoscute fără recrearea lor. În lipsa sursei pe o tranzacție veche, aceasta rămâne plată din bani. Cheltuielile din bonuri sunt permise și peste sold, cu avertizare.
 
 Adăugarea, editarea sau ștergerea înlocuiește/elimină înregistrarea după ID și recalculează totalurile, fără debitări/restaurări manuale. Ștergerea cere confirmare; repetarea eliminării nu dublează restaurarea. Bugetele inițiale rămân nemodificate. Rezumatele de lună deja salvate se actualizează numai la recalculare explicită.
+
+Resetarea din Dashboard șterge datele financiare din toate lunile (tranzacții, bugete, bonuri, alocări, repere, favorite, facturi, obiective și închideri), păstrând categoriile și aspectul. Necesită confirmare explicită; descărcarea backupului este bifată implicit înainte de ștergere.

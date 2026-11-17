@@ -1,4 +1,4 @@
-import {inMonth,categoryLabel} from './finance.js?v=funding-20261117';
+import {inMonth,categoryLabel} from './finance.js?v=financial-reset-20261117';
 
 export function previousMonth(month){
  const [year,m]=month.split('-').map(Number);return `${m===1?year-1:year}-${String(m===1?12:m-1).padStart(2,'0')}`;
@@ -64,4 +64,10 @@ export function parseBackup(text){
  for(const t of transactions){if(t.goalId&&!result.goals.some(g=>g.id===t.goalId))fail();if(t.billId&&!result.bills.some(b=>b.id===t.billId&&b.transactionId===t.id))fail();}
  for(const b of result.bills){const t=transactions.find(t=>t.id===b.transactionId);if(t&&t.billId!==b.id)fail();}
  return result;
+}
+
+export function resetFinancialData(state){
+ state.localCategories=true; // Preserve the configured category list after reloading an empty ledger.
+ for(const key of ['transactions','favorites','bills','goals'])state[key]=[];
+ for(const key of ['budgets','categoryBudgets','mealVouchers','mealAllocations','indicatorTargets','monthClosures'])state[key]={};
 }
