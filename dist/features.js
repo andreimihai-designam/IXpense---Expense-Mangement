@@ -1,4 +1,4 @@
-import {inMonth,categoryLabel} from './finance.js?v=compact-type-20261117';
+import {inMonth,categoryLabel} from './finance.js?v=mobile-dashboard-20261117';
 
 export function previousMonth(month){
  const [year,m]=month.split('-').map(Number);return `${m===1?year-1:year}-${String(m===1?12:m-1).padStart(2,'0')}`;
