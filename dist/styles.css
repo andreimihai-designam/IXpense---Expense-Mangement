@@ -59,3 +59,5 @@
 .indicator-spending-caption{font-size:10pt;color:var(--muted);margin:0 0 10px}
 
 .income-breakdown small{font-size:10pt}
+
+.general-balance{margin-top:12px}.income-breakdown small{font-size:10pt;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}.funding-warning{font-size:10pt;line-height:1.6;color:var(--red);margin:16px 0 0}.dashboard-balance-card .income-layout-dominant{align-items:start}.dashboard-balance-card .meal-balance-edit{width:56px;aspect-ratio:auto}

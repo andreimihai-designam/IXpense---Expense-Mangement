@@ -111,7 +111,7 @@ test('Voucher payments update their own balance and preserve salary balance',asy
  const {validateMealPayment,mealSummary,setMealVouchers}=await import('../dist/finance.js');const s=initialState({legacyCategories:true});setMealVouchers(s,'2026-11',50000);
  const expense={id:'meal1',name:'Prânz',date:'2026-11-12',type:'expense',amount:15000,category:'cat-0',paymentSource:'meal'};validateMealPayment(s,expense);s.transactions=[rows[0],expense];
  const summary=summarize(s.transactions,900000);assert.equal(summary.expenses,15000);assert.equal(summary.balance,900000);assert.equal(summary.remaining,900000);assert.equal(mealSummary(s,'2026-11').remaining,35000);
- assert.throws(()=>validateMealPayment(s,{...expense,id:'new',category:'cat-4'}));assert.throws(()=>validateMealPayment(s,{...expense,id:'new',amount:40000}));assert.throws(()=>validateMealPayment(s,{...expense,type:'income'}));
+ assert.throws(()=>validateMealPayment(s,{...expense,id:'new',category:'cat-4'}));assert.doesNotThrow(()=>validateMealPayment(s,{...expense,id:'new',amount:40000}));assert.throws(()=>validateMealPayment(s,{...expense,type:'income'}));
  validateMealPayment(s,{...expense,amount:40000});assert.throws(()=>setMealVouchers(s,'2026-11',10000));
  const out=csv([expense],s.categories);assert.ok(out.includes('Bonuri de masă'));
 });

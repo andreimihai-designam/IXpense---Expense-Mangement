@@ -150,3 +150,10 @@ Bugetul total include suma de pornire și veniturile suplimentare ale lunii; sal
 Categoriile afișează proeminent suma disponibilă (buget alocat minus cheltuieli) sau totalul cheltuit în luna selectată dacă nu au buget. Sumele se recalculează după editarea, mutarea sau ștergerea tranzacțiilor; alocarea inițială rămâne păstrată.
 
 Dashboard: Economii, Mașină și Datorii afișează totalul alocărilor categoriei și subcategoriilor minus cheltuielile lunii. Reperul Economii influențează doar proporția barei, nu suma disponibilă; vechiul reper Datorii nu înlocuiește bugetele alocate. Depășirile rămân vizibile ca sold negativ. Fără buget se afișează cheltuielile lunii.
+
+## Surse de finanțare și recalculare
+`monthlyFinancialSummary` calculează bugetul, cheltuielile și soldul fiecărei surse plus soldul general, din bugetele inițiale și lista unică de tranzacții. Dashboardul și închiderea lunii folosesc același rezumat. Alocările categoriilor nu se adaugă la venituri. Sumele sunt în bani întregi; soldurile negative sunt păstrate și avertizate.
+
+Alimentația selectează implicit bonurile pentru tranzacții noi. Sursa implicită se poate modifica în editarea categoriei și se păstrează în backup; nu rescrie sursele tranzacțiilor istorice. Categoriile personalizate de tip Alimente/Alimentație sunt recunoscute fără recrearea lor. În lipsa sursei pe o tranzacție veche, aceasta rămâne plată din bani. Cheltuielile din bonuri sunt permise și peste sold, cu avertizare.
+
+Adăugarea, editarea sau ștergerea înlocuiește/elimină înregistrarea după ID și recalculează totalurile, fără debitări/restaurări manuale. Ștergerea cere confirmare; repetarea eliminării nu dublează restaurarea. Bugetele inițiale rămân nemodificate. Rezumatele de lună deja salvate se actualizează numai la recalculare explicită.

@@ -1,4 +1,4 @@
-import {inMonth,summarize,monthlyIncome,mealSummary} from './finance.js?v=dashboard-budgets-20261116';
+import {monthlyFinancialSummary,inMonth,monthlyIncome} from './finance.js?v=funding-20261117';
 const validAmount=n=>Number.isSafeInteger(n)&&n>0&&n<=999999999999;
 const validDate=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&s>='1900-01-01'&&s<='9999-12-31'&&!Number.isNaN(Date.parse(s+'T12:00:00Z'))&&new Date(s+'T12:00:00Z').toISOString().slice(0,10)===s;
 export function billPayment(state,bill){return state.transactions.find(t=>t.id===bill.transactionId&&t.type==='expense')||null;}
@@ -33,10 +33,10 @@ export function contributeGoal(state,id,{amount,date,transactionId=null}={}){
 export function removeGoal(state,id){if(!state.goals?.some(g=>g.id===id))throw Error('Obiectivul nu mai există.');state.transactions.forEach(t=>{if(t.goalId===id)delete t.goalId;});state.goals=state.goals.filter(g=>g.id!==id);}
 export function preservePlanningLink(previous,entry){if(previous?.savingsContribution&&entry.type==='expense'&&entry.paymentSource!=='meal')entry.savingsContribution=true;if(!previous?.billId&&!previous?.goalId)return;if(entry.type!=='expense'||entry.paymentSource==='meal')throw Error('Plățile asociate facturilor sau obiectivelor trebuie să rămână cheltuieli din bani.');if(previous.billId)entry.billId=previous.billId;if(previous.goalId)entry.goalId=previous.goalId;}
 export function monthlyClosingSummary(state,month){
- const rows=inMonth(state.transactions,month),cash=summarize(rows,state.budgets[month]||0),income=monthlyIncome(state,month),meal=mealSummary(state,month);
+ const summary=monthlyFinancialSummary(state,month),rows=inMonth(state.transactions,month),income=monthlyIncome(state,month);
  const roots=state.categories.filter(c=>c.id==='cat-7'||c.name.trim().toLocaleLowerCase('ro-RO')==='economii').map(c=>c.id);const savingsIds=new Set(state.categories.filter(c=>roots.includes(c.id)||roots.includes(c.parentId)).map(c=>c.id));
  const savings=rows.filter(t=>t.type==='expense'&&t.paymentSource!=='meal'&&(t.goalId||t.savingsContribution||savingsIds.has(t.category))).reduce((s,t)=>s+t.amount,0);
- return {cashIncome:income.cash,mealIncome:income.vouchers,income:income.total,expenses:cash.expenses,cashExpenses:income.cash-cash.balance,mealExpenses:meal.spent,cashBalance:cash.balance,mealBalance:meal.remaining,savings,transactions:rows.length,budget:state.budgets[month]||0,budgetRemaining:cash.remaining};
+ return {cashIncome:income.cash,mealIncome:income.vouchers,income:income.total,expenses:summary.expenses,cashExpenses:summary.cash.spent,mealExpenses:summary.meal.spent,cashBalance:summary.cash.available,mealBalance:summary.meal.available,savings,transactions:rows.length,budget:summary.cash.total,budgetRemaining:summary.cash.available};
 }
 export function closeMonth(state,month){state.monthClosures??={};const closure={closedAt:new Date().toISOString(),totals:monthlyClosingSummary(state,month)};state.monthClosures[month]=closure;return closure;}
 export function closureChanged(state,month){const saved=state.monthClosures?.[month];return !!saved&&JSON.stringify(saved.totals)!==JSON.stringify(monthlyClosingSummary(state,month));}
