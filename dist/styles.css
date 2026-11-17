@@ -114,3 +114,11 @@ body[data-page=dashboard] .dashboard-category-bars{order:1;margin-top:24px;margi
 @media(max-width:360px){.mobile-finance-card{padding:21px 17px 12px}.mobile-finance-values dd{font-size:21px}.mobile-finance-values dt{font-size:14px}.mobile-gauge-value strong{font-size:27px}.mobile-dashboard{margin-inline:15px}.mobile-navigation{left:15px;right:15px;gap:9px}.mobile-budget-card{padding:18px 15px 22px}}
 @font-face{font-family:InterMobile;src:url(assets/inter.ttf) format('truetype');font-weight:400;font-display:swap}
 @media(max-width:650px){body{font-family:InterMobile,Inter,system-ui,sans-serif}.mobile-finance-values dd small{display:inline;margin-left:5px}.mobile-navigation a{transition:none}}
+
+.mobile-subcategory-panel{display:none}
+@media(max-width:650px){
+body[data-page=dashboard] .dashboard-category-bars{display:none}
+.mobile-subcategory-panel{display:block;order:1;padding:22px 18px;margin-top:23px;margin-bottom:0;border-radius:24px}
+.mobile-subcategory-panel>h2{font-size:18px;font-weight:650;margin:0 0 9px}.subcategory-scale-note{font-size:11px;line-height:1.6;color:var(--muted);margin:0 0 20px}.mobile-subcategory-list{display:grid;gap:21px}.mobile-subcategory-label{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:9px;font-size:12px}.mobile-subcategory-label>span{display:flex;align-items:baseline;gap:7px;min-width:0;overflow-wrap:anywhere}.mobile-subcategory-label .dot{flex-shrink:0}.mobile-subcategory-label strong{font-size:12px;font-weight:650;white-space:nowrap}.mobile-subcategory-track{height:10px;border-radius:6px;background:var(--mobile-track);overflow:hidden}.mobile-subcategory-track>span{display:block;height:100%;border-radius:6px;transition:width .25s}
+.mobile-navigation{height:60px}.mobile-navigation>nav{grid-template-columns:repeat(6,minmax(0,1fr));gap:0;padding:5px;width:100%}.mobile-navigation>nav>a{height:48px;border-radius:50%;background:transparent}.mobile-navigation>nav>a.active{background:var(--text);color:var(--bg)}.mobile-navigation svg{width:22px;height:22px}
+}

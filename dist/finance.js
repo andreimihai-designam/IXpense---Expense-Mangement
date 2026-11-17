@@ -186,3 +186,10 @@ export function transactionWarnings(state,entry){
 }
 
 export function foodBudgetCategoryId(categories){return categories.find(c=>c.id==='cat-0')?.id||categories.find(c=>!c.isGroup&&isFoodCategory(categories,c.id))?.id||null;}
+
+export function monthlySubcategorySpending(state,month){
+ const rows=inMonth(state.transactions,month),carColors=new Map(carBudgetSegments(state,month).segments.filter(s=>s.categoryId).map(s=>[s.categoryId,s.color]));
+ const categories=state.categories.filter(c=>!c.isGroup).map(c=>({...c,label:categoryLabel(c,state.categories),spent:rows.filter(t=>t.type==='expense'&&t.category===c.id).reduce((sum,t)=>sum+t.amount,0),color:carColors.get(c.id)||c.color}));
+ const maximum=Math.max(0,...categories.map(c=>c.spent));
+ return categories.sort((a,b)=>b.spent-a.spent||a.label.localeCompare(b.label,'ro')).map(c=>({...c,percent:maximum?c.spent*100/maximum:0}));
+}

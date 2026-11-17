@@ -43,3 +43,9 @@ test('Full financial reset clears every month, preserves categories/settings and
  for(const key of ['budgets','categoryBudgets','mealVouchers','mealAllocations','indicatorTargets','monthClosures'])assert.deepEqual(s[key],{});
  assert.equal(monthlyFinancialSummary(s,month).totalAvailable,0);assert.equal(monthlyFinancialSummary(s,'2026-10').totalAvailable,0);const first=structuredClone(s);resetFinancialData(s);assert.deepEqual(s,first);assert.deepEqual(parseBackup(createBackup(s)),s);
 });
+
+test('Mobile subcategory spending includes every leaf, isolates months and incomes, compares actual spending without allocations',async()=>{
+ const {monthlySubcategorySpending}=await import('../dist/finance.js');const s=setup();s.transactions.push(entry('one',1000,'cat-8'),entry('two',2000,'cat-8'),entry('fuel',5000,'cat-1'),{...entry('old',90000,'cat-8'),date:'2026-10-01'},{...entry('gift',10000,'cat-8'),type:'income'});
+ const rows=monthlySubcategorySpending(s,month);assert.equal(rows.length,s.categories.filter(c=>!c.isGroup).length);assert.equal(rows[0].id,'cat-1');assert.equal(rows[0].percent,100);assert.equal(rows.find(c=>c.id==='cat-8').spent,3000);assert.equal(rows.find(c=>c.id==='cat-8').percent,60);assert.equal(rows.find(c=>c.id==='cat-0').percent,0);assert.equal(rows.find(c=>c.id==='cat-1').color,'#758e4f');assert.ok(rows.find(c=>c.id==='cat-8').label.includes('Diverse'));
+ s.transactions.find(t=>t.id==='two').amount=3000;assert.equal(monthlySubcategorySpending(s,month).find(c=>c.id==='cat-8').spent,4000);s.transactions=s.transactions.filter(t=>t.id!=='one');assert.equal(monthlySubcategorySpending(s,month).find(c=>c.id==='cat-8').spent,3000);assert.ok(monthlySubcategorySpending(s,'2026-12').every(c=>c.percent===0));
+});
