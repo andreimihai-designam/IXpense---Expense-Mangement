@@ -63,3 +63,5 @@
 .general-balance{margin-top:12px}.income-breakdown small{font-size:10pt;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}.funding-warning{font-size:10pt;line-height:1.6;color:var(--red);margin:16px 0 0}.dashboard-balance-card .income-layout-dominant{align-items:start}.dashboard-balance-card .meal-balance-edit{width:56px;aspect-ratio:auto}
 
 .dashboard-balance-heading{display:flex;justify-content:space-between;align-items:center;gap:16px}.dashboard-reset{width:40px;height:40px;flex-shrink:0;color:var(--muted)}.dashboard-reset:hover{color:var(--red);background:#ef444415}.dashboard-reset svg{width:20px;height:20px}
+
+.dashboard-balance-heading{justify-content:flex-end}.dashboard-balance-card .income-layout-dominant{margin-top:8px}
