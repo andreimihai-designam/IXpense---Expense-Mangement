@@ -161,3 +161,7 @@ Adăugarea, editarea sau ștergerea înlocuiește/elimină înregistrarea după 
 Resetarea din Dashboard șterge datele financiare din toate lunile (tranzacții, bugete, bonuri, alocări, repere, favorite, facturi, obiective și închideri), păstrând categoriile și aspectul. Necesită confirmare explicită; descărcarea backupului este bifată implicit înainte de ștergere.
 
 Dashboardul cu card Salariu/Cheltuit, indicator semicircular, bonuri separate și bare pe subcategorii se adaptează la telefon, tabletă, laptop și desktop. Ecranele mari folosesc două coloane; pe mobil navigarea cu șase iconițe apare într-o bandă închisă, hașurată, fără forme ovale.
+
+## Sincronizare Supabase
+
+Sincronizarea opțională se activează din Setări, prin link email fără parolă. Importul inițial este explicit și descarcă un backup; datele locale originale rămân păstrate separat. Pe celelalte dispozitive, conectarea la același cont încarcă documentul cloud. Salvarea este automată, iar actualizările externe se verifică la aproximativ 10 secunde cât timp aplicația este deschisă. Conflictele cer alegerea explicită a variantei și nu folosesc suprascriere automată. Vezi [configurarea, arhitectura și verificările](supabase/README.md).

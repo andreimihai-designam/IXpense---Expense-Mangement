@@ -1,4 +1,4 @@
-import {inMonth,categoryLabel} from './finance.js?v=pie-direct-labels-20261117';
+import {inMonth,categoryLabel} from './finance.js?v=cloud-20261118';
 
 export function previousMonth(month){
  const [year,m]=month.split('-').map(Number);return `${m===1?year-1:year}-${String(m===1?12:m-1).padStart(2,'0')}`;

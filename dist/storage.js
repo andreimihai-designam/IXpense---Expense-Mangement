@@ -1,7 +1,11 @@
-import {DEFAULT_CATEGORIES} from './finance.js?v=pie-direct-labels-20261117';
+import {DEFAULT_CATEGORIES} from './finance.js?v=cloud-20261118';
 const KEY='jarvis-expencer-v1';
+let activeKey=KEY;
+export function setStorageScope(userId=null){if(userId!==null&&!/^[a-zA-Z0-9_-]{1,100}$/.test(userId))throw Error('Identitate invalidă.');activeKey=userId?KEY+':user:'+userId:KEY;}
+export const storageKey=()=>activeKey;
+export function loadAnonymousState(){const previous=activeKey;try{activeKey=KEY;return loadState();}finally{activeKey=previous;}}
 export function initialState({legacyCategories=false}={}){return {version:1,transactions:[],categories:legacyCategories?structuredClone(DEFAULT_CATEGORIES):[],...(legacyCategories?{}:{localCategories:true}),budgets:{},categoryBudgets:{},favorites:[],bills:[],goals:[],monthClosures:{},indicatorTargets:{},mealVouchers:{},mealAllocations:{},theme:'dark',collapsed:false};}
-export function loadState(){const raw=localStorage.getItem(KEY);if(!raw)return initialState();const s=JSON.parse(raw);if(s.version!==1||!Array.isArray(s.transactions)||!Array.isArray(s.categories)||!s.budgets)throw Error('Datele salvate nu pot fi citite.');// Optional category defaults never rewrite historical transaction sources.
+export function loadState(){const raw=localStorage.getItem(activeKey);if(!raw)return initialState();const s=JSON.parse(raw);if(s.version!==1||!Array.isArray(s.transactions)||!Array.isArray(s.categories)||!s.budgets)throw Error('Datele salvate nu pot fi citite.');// Optional category defaults never rewrite historical transaction sources.
 for(const c of s.categories)if(c.defaultPaymentSource!==undefined&&!['cash','meal'].includes(c.defaultPaymentSource))delete c.defaultPaymentSource;
 s.favorites ??= [];s.bills ??= [];s.goals ??= [];s.monthClosures ??= {};s.indicatorTargets ??= {};s.categoryBudgets ??= {};s.mealVouchers ??= {};s.mealAllocations ??= {};
 const retiredIds=['cat-subscriptions','cat-contracts'];
@@ -37,5 +41,5 @@ if(onlyStarterCategories&&!hasFinancialData){
  s.localCategories=true;
 }
 return s;}
-export function saveState(state){localStorage.setItem(KEY,JSON.stringify(state));}
+export function saveState(state){localStorage.setItem(activeKey,JSON.stringify(state));}
 export function demoTransactions(month){return [['Salariu','income',850000,0,1],['Freelance · proiect web','income',180000,8,5],['Cumpărături săptămânale','expense',28650,0,2],['Abonament internet','expense',6500,2,3],['Motorină OMV','expense',32000,1,4],['Cafea & mic dejun','expense',4850,0,5],['Factură energie','expense',24800,2,6],['Cumpărături online','expense',45900,3,7],['Cinema cu prietenii','expense',8500,6,8],['Prânz în oraș','expense',7400,0,9],['Farmacie','expense',12750,5,10],['Economii lunare','expense',100000,7,10],['Supermarket','expense',35475,0,11]].map(([name,type,amount,cat,day])=>({id:crypto.randomUUID(),name,type,amount,category:'cat-'+cat,date:month+'-'+String(day).padStart(2,'0'),description:''}));}
