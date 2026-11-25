@@ -7,7 +7,7 @@ import {subcategorySpendingOverview,monthlySubcategorySpending,foodBudgetCategor
 import {setStorageScope,storageKey,loadAnonymousState,initialState,loadState,saveState,demoTransactions} from './storage.js?v=top-five-20261125';
 const $=s=>document.querySelector(s), esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const icon=name=>`<i data-lucide="${name}"></i>`, today=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Bucharest'}).format(new Date());
-let cloud=null,spendingExpanded=false;
+let cloud=null,spendingExpanded=false,lastCloudPhase=null,lastSyncedRevision=null,syncFlashTimer=null;
 let state,storageFailed=false,pendingRestore=null,budgetTab='monthly',billDay='';
 try{state=loadState();}catch{state=initialState();storageFailed=true;}
 let month=today().slice(0,7), page='dashboard', filter={search:'',category:'',type:''},tablePage=1,modal=null,toastTimer;
@@ -63,7 +63,7 @@ return `<section class="panel salary-planning"><div><span class="eyebrow">PLANUL
 }
 function arrangeDashboardHeader(){
  const nav=$('.month-navigation'),target=window.matchMedia('(max-width:650px)').matches&&page==='dashboard'?$('#dashboard-context-row'):$('.page-heading');
- if(nav.parentElement!==target)target.append(nav);
+ if(nav.parentElement!==target)target.append(nav);const add=$('#header-add'),addTarget=window.matchMedia('(max-width:650px)').matches&&page==='dashboard'?$('#dashboard-context-row'):$('.topbar');if(add.parentElement!==addTarget)addTarget.append(add);
 }
 window.matchMedia('(max-width:650px)').addEventListener('change',arrangeDashboardHeader);
 function render(){document.body.dataset.page=page;const more=$('#mobile-more');if(more)more.open=false;$('#page-title').textContent=pages[page];$('#month-name').textContent=new Date(month+'-01T12:00:00').toLocaleDateString('ro-RO',{month:'long'}).toLocaleUpperCase('ro-RO');$('#month-year').textContent=month.slice(0,4);$('#prev-month').disabled=month==='1900-01';$('#next-month').disabled=month==='9999-12';document.querySelectorAll('a[data-page]').forEach(a=>{a.classList.toggle('active',a.dataset.page===page);a.dataset.page===page?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current');a.title=pages[a.dataset.page];});applyAppearance();$('#content').innerHTML=page==='dashboard'?`${metrics()}${transactions()}${dashboardCategoryBars()}${mobileSubcategoryBars()}`:page==='transactions'?transactions():page==='budgets'?budgetView():page==='categories'?categoriesView():page==='reports'?reportsView():settingsView();arrangeDashboardHeader();icons();}
@@ -258,7 +258,7 @@ function cloudSettingsView(){
  return html;
 }
 function showCloudStatus(){
- const bar=$('#cloud-status');if(bar){const phase=cloud?.phase||'loading',label=cloudLabels[phase],accountLabel=cloud?.user?'Cont și sincronizare':'Conectează dispozitivele',statusIcon={synced:'check',pending:'refresh-cw',loading:'loader-circle',local:'hard-drive',offline:'cloud-off',conflict:'circle-alert','choose-import':'cloud-upload',error:'circle-alert'}[phase];bar.dataset.status=phase;bar.setAttribute('aria-label',label);bar.innerHTML=`<span class="cloud-status-summary" title="${esc(label)}"><span class="cloud-state-icon" aria-hidden="true">${icon(statusIcon)}</span><span class="cloud-status-text">${esc(label)}</span></span><a href="#settings" aria-label="${esc(accountLabel)}" title="${esc(accountLabel)}"><span class="cloud-account-icon" aria-hidden="true">${icon('refresh-cw')}</span><span class="cloud-account-text">${esc(accountLabel)}</span></a>`;icons();}
+ const bar=$('#cloud-status');if(bar){const phase=cloud?.phase||'loading',label=cloudLabels[phase],accountLabel=cloud?.user?'Cont și sincronizare':'Conectează dispozitivele',statusIcon={synced:'check',pending:'refresh-cw',loading:'loader-circle',local:'hard-drive',offline:'cloud-off',conflict:'circle-alert','choose-import':'cloud-upload',error:'circle-alert'}[phase];const completed=phase==='synced'&&(lastCloudPhase!=='synced'||lastSyncedRevision!==cloud?.meta.version);lastCloudPhase=phase;if(phase!=='synced'){clearTimeout(syncFlashTimer);bar.classList.remove('sync-flash');}if(completed){lastSyncedRevision=cloud?.meta.version;clearTimeout(syncFlashTimer);bar.classList.add('sync-flash');syncFlashTimer=setTimeout(()=>bar.classList.remove('sync-flash'),500);}bar.dataset.status=phase;bar.setAttribute('aria-label',label);bar.innerHTML=`<span class="cloud-status-summary" title="${esc(label)}"><span class="cloud-state-icon" aria-hidden="true">${icon(statusIcon)}</span><span class="cloud-status-text">${esc(label)}</span></span><a href="#settings" aria-label="${esc(accountLabel)}" title="${esc(accountLabel)}"><span class="cloud-account-icon" aria-hidden="true">${icon('refresh-cw')}</span><span class="cloud-account-text">${esc(accountLabel)}</span></a>`;icons();}
  const panel=$('.cloud-settings');if(panel&&document.activeElement?.id!=='cloud-email')panel.innerHTML=cloudSettingsView();
 }
 async function performCloudChoice(form){

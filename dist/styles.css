@@ -262,3 +262,15 @@ body[data-page=dashboard] #cloud-status .cloud-status-summary{grid-column:1;grid
 body[data-page=dashboard] #cloud-status>a{grid-column:3;grid-row:1;pointer-events:auto}
 body[data-page=dashboard] #dashboard-context-row>.month-navigation{grid-column:2;grid-row:1;z-index:1;justify-content:center;gap:8px;margin:0;width:100%;min-height:44px}
 }
+
+@media(max-width:650px){
+body[data-page=dashboard] .topbar{display:none}
+body[data-page=dashboard] #dashboard-context-row{margin-top:22px}
+body[data-page=dashboard] #dashboard-context-row>#header-add{grid-column:1;grid-row:1;z-index:2;display:grid;place-items:center;width:40px;height:44px;min-height:44px;border:0;border-radius:0;padding:0;background:transparent;color:var(--text)}
+body[data-page=dashboard] #header-add svg{width:25px;height:25px}
+body[data-page=dashboard] #cloud-status{position:relative}
+body[data-page=dashboard] #cloud-status .cloud-status-summary{position:absolute;right:42px;top:12px;width:18px;height:20px;min-width:18px;min-height:20px;grid-column:auto;grid-row:auto}
+body[data-page=dashboard] #cloud-status .cloud-state-icon svg{width:18px;height:18px}
+body[data-page=dashboard] #cloud-status[data-status=synced] .cloud-status-summary{display:none}
+body[data-page=dashboard] #cloud-status[data-status=synced].sync-flash .cloud-status-summary{display:flex}
+}
