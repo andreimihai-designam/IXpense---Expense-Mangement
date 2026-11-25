@@ -1,4 +1,4 @@
-import {createBackup,parseBackup} from './features.js?v=cloud-20261118';
+import {createBackup,parseBackup} from './features.js?v=top-five-20261125';
 
 export function cloudPayload(state){const {theme,collapsed,...data}=state;return data;}
 export function stable(value){if(Array.isArray(value))return '['+value.map(stable).join(',')+']';if(value&&typeof value==='object')return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+stable(value[k])).join(',')+'}';return JSON.stringify(value);}

@@ -193,3 +193,10 @@ export function monthlySubcategorySpending(state,month){
  const maximum=Math.max(0,...categories.map(c=>c.spent));
  return categories.sort((a,b)=>b.spent-a.spent||a.label.localeCompare(b.label,'ro')).map(c=>({...c,percent:maximum?c.spent*100/maximum:0}));
 }
+
+// Presentation only: grouping never changes transactions, allocations or source balances.
+export function subcategorySpendingOverview(state,month,limit=5){
+ const all=monthlySubcategorySpending(state,month).filter(c=>c.spent>0),top=all.slice(0,limit),otherSpent=all.slice(limit).reduce((sum,c)=>sum+c.spent,0);
+ const other={id:'__dashboard_others__',name:'Altele',label:'Altele',color:'#94a3b8',spent:otherSpent,isAggregate:true};
+ return {all,top,otherSpent,total:all.reduce((sum,c)=>sum+c.spent,0),chartRows:otherSpent>0?[...top,other]:top};
+}

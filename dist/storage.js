@@ -1,4 +1,4 @@
-import {DEFAULT_CATEGORIES} from './finance.js?v=cloud-20261118';
+import {DEFAULT_CATEGORIES} from './finance.js?v=top-five-20261125';
 const KEY='jarvis-expencer-v1';
 let activeKey=KEY;
 export function setStorageScope(userId=null){if(userId!==null&&!/^[a-zA-Z0-9_-]{1,100}$/.test(userId))throw Error('Identitate invalidă.');activeKey=userId?KEY+':user:'+userId:KEY;}

@@ -165,3 +165,5 @@ Dashboardul cu card Salariu/Cheltuit, indicator semicircular, bonuri separate ș
 ## Sincronizare Supabase
 
 Sincronizarea opțională se activează din Setări, prin link email fără parolă. Importul inițial este explicit și descarcă un backup; datele locale originale rămân păstrate separat. Pe celelalte dispozitive, conectarea la același cont încarcă documentul cloud. Salvarea este automată, iar actualizările externe se verifică la aproximativ 10 secunde cât timp aplicația este deschisă. Conflictele cer alegerea explicită a variantei și nu folosesc suprascriere automată. Vezi [configurarea, arhitectura și verificările](supabase/README.md).
+
+Dashboardul afișează două casete compacte, fiecare cu trei coloane: salariu/bonuri primite, cheltuit și sold disponibil. Secțiunea de subcategorii pornește cu primele cinci sume pozitive ale lunii; pe pie chart restul se cumulează în „Altele”, păstrând totalul exact. „Vezi toate” extinde lista fără modificarea datelor; subcategoriile cu 0 RON rămân ascunse.
