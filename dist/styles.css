@@ -300,3 +300,13 @@ body[data-page=dashboard] .transactions-panel .row-actions .favorite-star{displa
 body[data-page=dashboard] .transactions-panel .row-actions .icon-button{display:grid;place-items:center;width:32px;min-width:32px;height:36px;min-height:36px;padding:4px}
 body[data-page=dashboard] .transactions-panel .row-actions svg{width:16px;height:16px}
 }
+@media(max-width:650px){
+/* Retain the colored transaction icon; keep actions below the name, on the left. */
+body[data-page=dashboard] .transactions-panel tbody tr{grid-template-rows:minmax(28px,auto) 36px;row-gap:6px}
+body[data-page=dashboard] .transactions-panel td:first-child{padding-left:0}
+body[data-page=dashboard] .transactions-panel .transaction-name{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;gap:7px}
+body[data-page=dashboard] .transactions-panel .transaction-name>.tile{display:grid;width:28px;height:28px;min-width:28px;grid-column:1;grid-row:1}
+body[data-page=dashboard] .transactions-panel .transaction-title{grid-column:2;grid-row:1}
+body[data-page=dashboard] .transactions-panel td:nth-child(3),body[data-page=dashboard] .transactions-panel td:nth-child(5){grid-row:1 / span 2}
+body[data-page=dashboard] .transactions-panel td.row-actions{position:static;transform:none;grid-column:1;grid-row:2;flex-direction:row;align-items:center;justify-content:flex-start;width:auto;gap:4px}
+}
