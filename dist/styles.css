@@ -274,3 +274,29 @@ body[data-page=dashboard] #cloud-status .cloud-state-icon svg{width:18px;height:
 body[data-page=dashboard] #cloud-status[data-status=synced] .cloud-status-summary{display:none}
 body[data-page=dashboard] #cloud-status[data-status=synced].sync-flash .cloud-status-summary{display:flex}
 }
+
+.transaction-date-short{display:none}
+@media(max-width:650px){
+body[data-page=dashboard] .transactions-panel .table-scroll{overflow:visible;width:100%}
+body[data-page=dashboard] .transactions-panel table{display:block;width:100%;min-width:0;table-layout:fixed}
+body[data-page=dashboard] .transactions-panel thead,body[data-page=dashboard] .transactions-panel tbody{display:block;width:100%}
+body[data-page=dashboard] .transactions-panel tr{display:grid;grid-template-columns:minmax(0,1fr) 88px 62px;column-gap:6px;position:relative;width:100%;box-sizing:border-box;padding:11px 10px;align-items:center}
+body[data-page=dashboard] .transactions-panel th,body[data-page=dashboard] .transactions-panel td{padding:0;border:0;min-width:0;white-space:normal;overflow-wrap:anywhere;background:transparent}
+body[data-page=dashboard] .transactions-panel thead{background:var(--sidebar);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+body[data-page=dashboard] .transactions-panel th{font-size:11px}body[data-page=dashboard] .transactions-panel tbody tr{min-height:96px;border-bottom:1px solid var(--line)}body[data-page=dashboard] .transactions-panel tbody tr:last-child{border-bottom:0}
+body[data-page=dashboard] .transactions-panel th:nth-child(2),body[data-page=dashboard] .transactions-panel th:nth-child(4),body[data-page=dashboard] .transactions-panel th:nth-child(6),body[data-page=dashboard] .transactions-panel td:nth-child(2),body[data-page=dashboard] .transactions-panel td:nth-child(4){display:none}
+body[data-page=dashboard] .transactions-panel th:first-child,body[data-page=dashboard] .transactions-panel td:first-child{grid-column:1;grid-row:1}
+body[data-page=dashboard] .transactions-panel td:first-child{padding-left:36px}
+body[data-page=dashboard] .transactions-panel th:nth-child(5),body[data-page=dashboard] .transactions-panel td:nth-child(5){grid-column:2;grid-row:1;text-align:right}
+body[data-page=dashboard] .transactions-panel th:nth-child(3),body[data-page=dashboard] .transactions-panel td:nth-child(3){grid-column:3;grid-row:1;text-align:right}
+body[data-page=dashboard] .transactions-panel .transaction-name{display:block;min-width:0;font-size:12px;line-height:1.5}
+body[data-page=dashboard] .transactions-panel .transaction-name>.tile,body[data-page=dashboard] .transactions-panel .transaction-name>.tag{display:none}
+body[data-page=dashboard] .transactions-panel .transaction-title{display:block;white-space:normal;overflow-wrap:anywhere}
+body[data-page=dashboard] .transactions-panel .amount{font-size:11px;line-height:1.6;white-space:normal;overflow-wrap:anywhere}
+body[data-page=dashboard] .transactions-panel .transaction-date-long{display:none}
+body[data-page=dashboard] .transactions-panel .transaction-date-short{display:inline;font-size:10px;white-space:nowrap}
+body[data-page=dashboard] .transactions-panel td.row-actions{display:flex;flex-direction:column;align-items:center;justify-content:center;position:absolute;left:6px;top:50%;transform:translateY(-50%);width:32px;padding:0;gap:2px}
+body[data-page=dashboard] .transactions-panel .row-actions .favorite-star{display:none}
+body[data-page=dashboard] .transactions-panel .row-actions .icon-button{display:grid;place-items:center;width:32px;min-width:32px;height:36px;min-height:36px;padding:4px}
+body[data-page=dashboard] .transactions-panel .row-actions svg{width:16px;height:16px}
+}
