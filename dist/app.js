@@ -250,7 +250,7 @@ function cloudSettingsView(){
  return html;
 }
 function showCloudStatus(){
- const bar=$('#cloud-status');if(bar){bar.dataset.status=cloud?.phase||'loading';bar.innerHTML=`<span>${esc(cloudLabels[cloud?.phase||'loading'])}</span><a href="#settings">${cloud?.user?'Cont și sincronizare':'Conectează dispozitivele'}</a>`;}
+ const bar=$('#cloud-status');if(bar){const phase=cloud?.phase||'loading',label=cloudLabels[phase],accountLabel=cloud?.user?'Cont și sincronizare':'Conectează dispozitivele',statusIcon={synced:'check',pending:'refresh-cw',loading:'loader-circle',local:'hard-drive',offline:'cloud-off',conflict:'circle-alert','choose-import':'cloud-upload',error:'circle-alert'}[phase];bar.dataset.status=phase;bar.setAttribute('aria-label',label);bar.innerHTML=`<span class="cloud-status-summary" title="${esc(label)}"><span class="cloud-state-icon" aria-hidden="true">${icon(statusIcon)}</span><span class="cloud-status-text">${esc(label)}</span></span><a href="#settings" aria-label="${esc(accountLabel)}" title="${esc(accountLabel)}"><span class="cloud-account-icon" aria-hidden="true">${icon('refresh-cw')}</span><span class="cloud-account-text">${esc(accountLabel)}</span></a>`;icons();}
  const panel=$('.cloud-settings');if(panel&&document.activeElement?.id!=='cloud-email')panel.innerHTML=cloudSettingsView();
 }
 async function performCloudChoice(form){
@@ -284,3 +284,5 @@ showCloudStatus();
 cloud.start().catch(error=>{cloud.status('error',error.message);});
 window.addEventListener('online',()=>cloud.retry().catch(error=>cloud.status('offline',error.message)));
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')cloud.schedule(100);});
+
+$('#header-add').addEventListener('click',()=>openModal('transaction'));
