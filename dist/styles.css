@@ -389,3 +389,64 @@ body[data-page=dashboard] .transactions-panel th:nth-child(5),body[data-page=das
 body[data-page=dashboard] .transactions-panel td:nth-child(3){grid-row:1}
 body[data-page=dashboard] .transactions-panel td.row-actions{display:none}
 }
+
+/* Tablet recent transactions use the same three readable columns as mobile. */
+@media(min-width:651px) and (max-width:980px){
+body[data-page=dashboard] .transactions-panel .table-scroll{overflow:visible;width:100%}
+body[data-page=dashboard] .transactions-panel table{display:block;width:100%;min-width:0;table-layout:fixed}
+body[data-page=dashboard] .transactions-panel thead,body[data-page=dashboard] .transactions-panel tbody{display:block;width:100%}
+body[data-page=dashboard] .transactions-panel tr{display:grid;grid-template-columns:minmax(0,1fr) 88px 62px;column-gap:6px;position:relative;width:100%;box-sizing:border-box;padding:11px 10px;align-items:center}
+body[data-page=dashboard] .transactions-panel th,body[data-page=dashboard] .transactions-panel td{padding:0;border:0;min-width:0;white-space:normal;overflow-wrap:anywhere;background:transparent}
+body[data-page=dashboard] .transactions-panel thead{background:var(--sidebar);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+body[data-page=dashboard] .transactions-panel th{font-size:11px}body[data-page=dashboard] .transactions-panel tbody tr{min-height:96px;border-bottom:1px solid var(--line)}body[data-page=dashboard] .transactions-panel tbody tr:last-child{border-bottom:0}
+body[data-page=dashboard] .transactions-panel th:nth-child(2),body[data-page=dashboard] .transactions-panel th:nth-child(4),body[data-page=dashboard] .transactions-panel th:nth-child(6),body[data-page=dashboard] .transactions-panel td:nth-child(2),body[data-page=dashboard] .transactions-panel td:nth-child(4){display:none}
+body[data-page=dashboard] .transactions-panel th:first-child,body[data-page=dashboard] .transactions-panel td:first-child{grid-column:1;grid-row:1}
+body[data-page=dashboard] .transactions-panel td:first-child{padding-left:36px}
+body[data-page=dashboard] .transactions-panel th:nth-child(5),body[data-page=dashboard] .transactions-panel td:nth-child(5){grid-column:2;grid-row:1;text-align:right}
+body[data-page=dashboard] .transactions-panel th:nth-child(3),body[data-page=dashboard] .transactions-panel td:nth-child(3){grid-column:3;grid-row:1;text-align:right}
+body[data-page=dashboard] .transactions-panel .transaction-name{display:block;min-width:0;font-size:12px;line-height:1.5}
+body[data-page=dashboard] .transactions-panel .transaction-name>.tile,body[data-page=dashboard] .transactions-panel .transaction-name>.tag{display:none}
+body[data-page=dashboard] .transactions-panel .transaction-title{display:block;white-space:normal;overflow-wrap:anywhere}
+body[data-page=dashboard] .transactions-panel .amount{font-size:11px;line-height:1.6;white-space:normal;overflow-wrap:anywhere}
+body[data-page=dashboard] .transactions-panel .transaction-date-long{display:none}
+body[data-page=dashboard] .transactions-panel .transaction-date-short{display:inline;font-size:10px;white-space:nowrap}
+body[data-page=dashboard] .transactions-panel td.row-actions{display:flex;flex-direction:column;align-items:center;justify-content:center;position:absolute;left:6px;top:50%;transform:translateY(-50%);width:32px;padding:0;gap:2px}
+body[data-page=dashboard] .transactions-panel .row-actions .favorite-star{display:none}
+body[data-page=dashboard] .transactions-panel .row-actions .icon-button{display:grid;place-items:center;width:32px;min-width:32px;height:36px;min-height:36px;padding:4px}
+body[data-page=dashboard] .transactions-panel .row-actions svg{width:16px;height:16px}
+}
+@media(min-width:651px) and (max-width:980px){
+/* Retain the colored transaction icon; keep actions below the name, on the left. */
+body[data-page=dashboard] .transactions-panel tbody tr{grid-template-rows:minmax(28px,auto) 36px;row-gap:6px}
+body[data-page=dashboard] .transactions-panel td:first-child{padding-left:0}
+body[data-page=dashboard] .transactions-panel .transaction-name{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;gap:7px}
+body[data-page=dashboard] .transactions-panel .transaction-name>.tile{display:grid;width:28px;height:28px;min-width:28px;grid-column:1;grid-row:1}
+body[data-page=dashboard] .transactions-panel .transaction-title{grid-column:2;grid-row:1}
+body[data-page=dashboard] .transactions-panel td:nth-child(3),body[data-page=dashboard] .transactions-panel td:nth-child(5){grid-row:1 / span 2}
+body[data-page=dashboard] .transactions-panel td.row-actions{position:static;transform:none;grid-column:1;grid-row:2;flex-direction:row;align-items:center;justify-content:flex-start;width:auto;gap:4px}
+}
+
+/* Recent transactions fit their container without an inner scroll area. */
+body[data-page=dashboard] .transactions-panel{min-width:0}
+body[data-page=dashboard] .transactions-panel .table-scroll{width:100%;overflow:visible;max-height:none}
+body[data-page=dashboard] .transactions-panel table{width:100%;min-width:0;table-layout:fixed}
+body[data-page=dashboard] .transactions-panel th,body[data-page=dashboard] .transactions-panel td{white-space:normal;overflow-wrap:anywhere}
+body[data-page=dashboard] .transactions-panel .transaction-name{min-width:0}
+body[data-page=dashboard] .transactions-panel .transaction-title{min-width:0;white-space:normal;overflow-wrap:anywhere}
+body[data-page=dashboard] .transactions-panel .tag{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+body[data-page=dashboard] .transactions-panel td.row-actions{display:none}
+@media(max-width:980px){
+body[data-page=dashboard] .transactions-panel tr{grid-template-columns:minmax(0,1fr) minmax(90px,.85fr) minmax(0,1fr);grid-template-rows:auto;row-gap:0}
+body[data-page=dashboard] .transactions-panel tbody tr{grid-template-rows:auto;min-height:70px}
+body[data-page=dashboard] .transactions-panel th:nth-child(5),body[data-page=dashboard] .transactions-panel td:nth-child(5){text-align:center;grid-row:1}
+body[data-page=dashboard] .transactions-panel td:nth-child(3){grid-row:1}
+}
+@media(min-width:651px) and (max-width:980px){
+body[data-page=dashboard] #content{row-gap:48px}
+body[data-page=dashboard] .source-summary-stack{align-self:stretch;grid-template-rows:minmax(120px,1fr) auto minmax(130px,1fr);min-width:0}
+.routine-balance{display:flex;flex-direction:column;justify-content:space-between}
+.source-summary-card[data-summary-source=meal]{display:flex;flex-direction:column;justify-content:center}
+.source-summary-actions{position:absolute;right:0;bottom:-30px;margin:0}
+}
+@media(min-width:981px){body[data-page=dashboard] .transactions-panel th,body[data-page=dashboard] .transactions-panel td{padding-inline:12px}body[data-page=dashboard] .transactions-panel th:nth-child(6),body[data-page=dashboard] .transactions-panel td:nth-child(6){display:none}}
+@media(max-width:980px){body[data-page=dashboard] .transactions-panel th:nth-child(5){text-align:center!important}}
