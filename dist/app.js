@@ -80,8 +80,7 @@ const linked=state.transactions.find(t=>t.salaryMonth===month),allocated=Object.
 return `<section class="panel salary-planning"><div><span class="eyebrow">PLANUL TĂU PENTRU ${esc(monthName().toLocaleUpperCase('ro-RO'))}</span><h2>${linked?'Salariul tău, împărțit cu sens.':'Începe luna cu salariul primit.'}</h2>${linked?`<p>Buget lunar: <strong>${money(budget())}</strong> · Alocat pe categorii: <strong>${money(allocated)}</strong> · <span class="${unallocated<0?'red':''}">${unallocated<0?'Alocat în plus':'De repartizat'}: <strong>${money(Math.abs(unallocated))}</strong></span></p>`:''}</div><div class="salary-actions"><button class="button primary" data-action="salary">${icon(linked?'pencil':'plus')}${linked?'Editează bugetul':'Adaugă buget'}</button><a class="button" href="#categories">${icon('shapes')}Împarte pe categorii</a></div></section>`;
 }
 function arrangeDashboardHeader(){
- const nav=$('.month-navigation'),target=window.matchMedia('(max-width:980px)').matches&&page==='dashboard'?$('#dashboard-context-row'):$('.page-heading');
- if(nav.parentElement!==target)target.append(nav);const add=$('#header-add'),addTarget=window.matchMedia('(max-width:980px)').matches&&page==='dashboard'?$('#dashboard-context-row'):window.matchMedia('(min-width:981px)').matches&&page==='dashboard'?$('.page-heading'):$('.topbar');if(add.parentElement!==addTarget)addTarget.append(add);
+ const target=$('#dashboard-context-row');for(const element of [$('#header-add'),$('.month-navigation')])if(element.parentElement!==target)target.append(element);
 }
 window.matchMedia('(max-width:980px)').addEventListener('change',arrangeDashboardHeader);
 window.matchMedia('(min-width:981px)').addEventListener('change',arrangeDashboardHeader);
