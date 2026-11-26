@@ -450,3 +450,20 @@ body[data-page=dashboard] .source-summary-stack{align-self:stretch;grid-template
 }
 @media(min-width:981px){body[data-page=dashboard] .transactions-panel th,body[data-page=dashboard] .transactions-panel td{padding-inline:12px}body[data-page=dashboard] .transactions-panel th:nth-child(6),body[data-page=dashboard] .transactions-panel td:nth-child(6){display:none}}
 @media(max-width:980px){body[data-page=dashboard] .transactions-panel th:nth-child(5){text-align:center!important}}
+
+/* One icon menu replaces the desktop sidebar. */
+.mobile-navigation nav{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(min-width:981px){
+.workspace,body.collapsed .workspace{margin:22px 24px 24px;max-width:1750px}
+.mobile-navigation{display:block;position:static;width:100%;margin:0 0 14px;padding:0;background:transparent;border:0;box-shadow:none}
+.mobile-navigation nav{display:grid;grid-template-columns:repeat(5,48px);gap:8px;justify-content:center;width:max-content;max-width:100%;margin:0 auto;padding:7px 10px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.mobile-navigation nav a{display:grid;place-items:center;width:48px;height:42px;padding:0;border:0;border-radius:10px;background:transparent;box-shadow:none;color:var(--muted)}
+.mobile-navigation nav a:hover{background:var(--raised);color:var(--text)}
+.mobile-navigation nav a.active{background:#9775fa20;color:var(--accent);box-shadow:none}
+.mobile-navigation nav a:before,.mobile-navigation nav a:after{display:none!important}
+.mobile-navigation nav svg{width:20px;height:20px}
+body[data-page=dashboard] .desktop-expense-chart{align-self:stretch;display:flex;flex-direction:column}
+.desktop-expense-chart>svg{flex:1;min-height:215px}
+.desktop-chart-footer{margin-top:auto}
+}
+@media(min-width:1800px){.workspace,body.collapsed .workspace{margin-inline:auto}}
