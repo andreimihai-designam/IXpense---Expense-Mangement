@@ -380,3 +380,12 @@ body,[data-theme=light] body{background:var(--bg);color:var(--text)}
 
 /* The legend grows with its rows and keeps labels and amounts centered. */
 .subcategory-pie-legend{max-height:none;overflow:visible}.subcategory-pie-legend li{align-items:center}.subcategory-pie-legend li>div{justify-content:center;align-self:center}
+/* Recent transactions are a compact overview; actions remain on Transactions. */
+body[data-page=dashboard] .transactions-panel .row-actions,body[data-page=dashboard] .transactions-panel th:nth-child(6){display:none}
+@media(max-width:650px){
+body[data-page=dashboard] .transactions-panel tr{grid-template-columns:minmax(0,1fr) minmax(90px,.85fr) minmax(0,1fr);grid-template-rows:auto;row-gap:0}
+body[data-page=dashboard] .transactions-panel tbody tr{grid-template-rows:auto;min-height:70px}
+body[data-page=dashboard] .transactions-panel th:nth-child(5),body[data-page=dashboard] .transactions-panel td:nth-child(5){text-align:center;grid-row:1}
+body[data-page=dashboard] .transactions-panel td:nth-child(3){grid-row:1}
+body[data-page=dashboard] .transactions-panel td.row-actions{display:none}
+}
