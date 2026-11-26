@@ -377,3 +377,6 @@ body,[data-theme=light] body{background:var(--bg);color:var(--text)}
 }
 @media(min-width:981px) and (max-width:1100px){.desktop-finance-dashboard{grid-template-columns:repeat(2,minmax(0,1fr))}.page-heading{flex-wrap:wrap}#page-title{flex:1 1 180px}.desktop-stat-amount{font-size:26px}}
 @media(max-width:360px){.routine-balance-body strong{font-size:28px}.routine-ring{width:56px;height:56px}.routine-ring>span{width:47px;height:47px}.source-summary-card dd{font-size:13px}.subcategory-pie-layout{gap:8px}.subcategory-pie-legend li{font-size:9px}.subcategory-pie-legend strong{font-size:9px}}
+
+/* The legend grows with its rows and keeps labels and amounts centered. */
+.subcategory-pie-legend{max-height:none;overflow:visible}.subcategory-pie-legend li{align-items:center}.subcategory-pie-legend li>div{justify-content:center;align-self:center}
